@@ -16,8 +16,9 @@ export class GenericHTTPRequest<T> extends BaseHttpRequest<T> {
   }
 
   protected convert(data: string): T {
-    if (this.convertFunc(data)) {
-      return data as T;
+    const jsonObj = JSON.parse(data);
+    if (this.convertFunc(jsonObj)) {
+      return jsonObj as T;
     } else {
       throw "DATA_CONVERT_FAILED";
     }
