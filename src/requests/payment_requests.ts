@@ -3,12 +3,8 @@ import {
   GetPaymentResponse,
   isGetPaymentResponse,
 } from "../response/payment_response";
-import {
-  BaseAPIConfig,
-  ContentType,
-  GenericHTTPRequest,
-  HttpMethod,
-} from "./http_request";
+import { BaseAPIConfig, ContentType, HttpMethod } from "./base_http_request";
+import { GenericHTTPRequest } from "./generic_http_request";
 
 const paymentConfig: BaseAPIConfig = {
   method: undefined,
