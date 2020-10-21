@@ -15,7 +15,10 @@ import {
   GetPaymentRequest,
   PostPaymentRequest,
 } from "./requests/payment_requests";
+import { debounce } from "lodash";
+import { Currency } from "./model/enum";
 
+//recoil
 const donateTotalAtom = atom<number>({
   key: "donateTotal",
   default: 0,
@@ -38,16 +41,47 @@ const donateMessageAtom = atom<string>({
   default: null,
 });
 
+//style
+const DonatePageDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffc6b6;
+  min-height: 100vh;
+
+  h1 {
+    font-size: 3em;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  header {
+    width: 100%;
+    background-color: #e9967a;
+  }
+`;
+
 const DonateMessage = styled.p`
-  color: red;
+  color: ${(props) => props.theme.popupFontColor};
   margin: 1em;
-  font-size: 16px;
+  font-size: 3em;
   font-weight: bold;
   text-align: center;
 `;
 
+const DonateCardDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  height: 100%;
+`;
+
 export function DonatePage() {
   const [charities, setCharities] = useState<Charities[]>([]);
+  const [currency, setCurrency] = useState<Currency>(null);
   const addTotal = useSetRecoilState(donateTotalState);
   const setDonateMessage = useSetRecoilState(donateMessageAtom);
 
@@ -66,6 +100,7 @@ export function DonatePage() {
           }
         });
         addTotal(total);
+        setCurrency(charities[0]?.currency || Currency.THB);
       } catch (e) {
         //TODO: error handler
         throw e;
@@ -78,7 +113,11 @@ export function DonatePage() {
     try {
       const res = await new PostPaymentRequest(payment).start();
       const amount = res.amount;
-      setDonateMessage(`Thanks for donate ${amount}!`);
+      setDonateMessage(
+        `Thank you for your donation ${amount.toLocaleString()} ${
+          payment.currency
+        }!`
+      );
       addTotal(amount);
     } catch (e) {
       //TODO: error handler
@@ -87,16 +126,24 @@ export function DonatePage() {
   };
 
   return (
-    <div>
-      <h1>Tamboon React</h1>
-      <DonateTotal />
-      <DonateMessageHeader />
-      {charities?.map((data, i) => {
-        return (
-          <DonateCard key={i} charities={data} donateHandler={donateHandler} />
-        );
-      })}
-    </div>
+    <DonatePageDiv>
+      <header>
+        <h1>Tamboon React</h1>
+        <DonateTotal currency={currency} />
+        <DonateMessageHeader />
+      </header>
+      <DonateCardDiv>
+        {charities?.map((data, i) => {
+          return (
+            <DonateCard
+              key={i}
+              charities={data}
+              donateHandler={donateHandler}
+            />
+          );
+        })}
+      </DonateCardDiv>
+    </DonatePageDiv>
   );
 }
 
@@ -117,7 +164,11 @@ function DonateMessageHeader() {
   return <DonateMessage>{donateMessage}</DonateMessage>;
 }
 
-function DonateTotal() {
+function DonateTotal(props: { currency: Currency }) {
   const total = useRecoilValue(donateTotalAtom);
-  return <p>All donations: {total}</p>;
+  return (
+    <h2>
+      All donations: {total.toLocaleString()} {props.currency}
+    </h2>
+  );
 }
