@@ -103,7 +103,16 @@ export function DonatePage() {
 function DonateMessageHeader() {
   const [donateMessage, setDonateMessage] = useRecoilState(donateMessageAtom);
 
-  //TODO: make it disappear in 2 second
+  const setupTimer = () => {
+    const timer = debounce(() => {
+      setDonateMessage("");
+    }, 2000);
+    timer();
+    return () => {
+      timer.cancel();
+    };
+  };
+  useEffect(donateMessage ? setupTimer : () => {}, [donateMessage]);
 
   return <DonateMessage>{donateMessage}</DonateMessage>;
 }
