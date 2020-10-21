@@ -33,6 +33,11 @@ const config = {
         use: "ts-loader",
         exclude: /node_modules/,
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
+        exclude: /node_modules/,
+        loader: "file-loader",
+      },
     ],
   },
   resolve: {
