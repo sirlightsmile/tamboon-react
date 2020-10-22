@@ -1,11 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import FontURL from "./fonts/Quicksand-SemiBold.ttf";
 
-export const theme = {
-  primaryBlue: "#0794B4",
-  primaryWhite: "#fff",
-};
-
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'QuicksandSemiBold';
@@ -27,7 +22,7 @@ export const mainTheme = {
   secondaryColor: "#0277BD",
   buttonColor: "#055894",
   activeButtonColor: "#051094",
-  popupFontColor: "#fad099",
+  popupFontColor: "#fB9B50",
 };
 
 export default GlobalStyle;
