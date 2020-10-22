@@ -110,6 +110,13 @@ export function DonatePage() {
   }, []);
 
   const donateHandler = async (payment: Payment) => {
+    const confirmMessage = `Are you sure you want to donate ${payment.amount.toLocaleString()} ${
+      payment.currency
+    }`;
+    if (!confirm(confirmMessage)) {
+      return;
+    }
+
     try {
       const res = await new PostPaymentRequest(payment).start();
       const amount = res.amount;
