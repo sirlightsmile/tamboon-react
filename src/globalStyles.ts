@@ -23,8 +23,8 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export const mainTheme = {
-  primaryColor: "#e9967a",
-  secondaryColor: "#ffc6b6",
+  primaryColor: "#B3E5FC",
+  secondaryColor: "#0277BD",
   buttonColor: "#055894",
   activeButtonColor: "#051094",
   popupFontColor: "#fad099",

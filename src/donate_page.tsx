@@ -69,7 +69,7 @@ const DonatePageDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #ffc6b6;
+  background-color: ${(props) => props.theme.secondaryColor};
   min-height: 100vh;
 
   h1 {
@@ -82,7 +82,7 @@ const DonatePageDiv = styled.div`
 
   header {
     width: 100%;
-    background-color: #e9967a;
+    background-color: ${(props) => props.theme.primaryColor};
   }
 `;
 
