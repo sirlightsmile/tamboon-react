@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   atom,
   selector,
@@ -41,6 +41,28 @@ const donateMessageAtom = atom<string>({
   default: null,
 });
 
+const charitiesState = selector<Charities[]>({
+  key: "charitiesState",
+  get: async () => {
+    try {
+      return new GetCharitiesRequest().start();
+    } catch (e) {
+      throw e;
+    }
+  },
+});
+
+const paymentsState = selector<Payment[]>({
+  key: "paymentsState",
+  get: async () => {
+    try {
+      return new GetPaymentRequest().start();
+    } catch (e) {
+      throw e;
+    }
+  },
+});
+
 //style
 const DonatePageDiv = styled.div`
   display: flex;
@@ -80,34 +102,35 @@ const DonateCardDiv = styled.div`
 `;
 
 export function DonatePage() {
-  const [charities, setCharities] = useState<Charities[]>([]);
-  const [currency, setCurrency] = useState<Currency>(null);
+  const payments = useRecoilValue(paymentsState);
   const addTotal = useSetRecoilState(donateTotalState);
-  const setDonateMessage = useSetRecoilState(donateMessageAtom);
 
   useEffect(() => {
-    const fetch = async () => {
-      try {
-        const [charities, payments] = await Promise.all([
-          new GetCharitiesRequest().start(),
-          new GetPaymentRequest().start(),
-        ]);
-        setCharities(charities);
-        let total = 0;
-        payments.forEach((element) => {
-          if (element.amount) {
-            total += element.amount;
-          }
-        });
-        addTotal(total);
-        setCurrency(charities[0]?.currency || Currency.THB);
-      } catch (e) {
-        //TODO: error handler
-        throw e;
+    let total = 0;
+    payments.forEach((element) => {
+      if (element.amount) {
+        total += element.amount;
       }
-    };
-    fetch();
+    });
+    addTotal(total);
   }, []);
+
+  return (
+    <DonatePageDiv>
+      <header>
+        <h1>Tamboon React</h1>
+        <DonateTotal currency={Currency.THB} />
+        <DonateMessageHeader />
+      </header>
+      <DonateContent />
+    </DonatePageDiv>
+  );
+}
+
+function DonateContent() {
+  const charities = useRecoilValue(charitiesState);
+  const setDonateMessage = useSetRecoilState(donateMessageAtom);
+  const addTotal = useSetRecoilState(donateTotalState);
 
   const donateHandler = async (payment: Payment) => {
     const confirmMessage = `Are you sure you want to donate ${payment.amount.toLocaleString()} ${
@@ -127,30 +150,18 @@ export function DonatePage() {
       );
       addTotal(amount);
     } catch (e) {
-      //TODO: error handler
       throw e;
     }
   };
 
   return (
-    <DonatePageDiv>
-      <header>
-        <h1>Tamboon React</h1>
-        <DonateTotal currency={currency} />
-        <DonateMessageHeader />
-      </header>
-      <DonateCardDiv>
-        {charities?.map((data, i) => {
-          return (
-            <DonateCard
-              key={i}
-              charities={data}
-              donateHandler={donateHandler}
-            />
-          );
-        })}
-      </DonateCardDiv>
-    </DonatePageDiv>
+    <DonateCardDiv>
+      {charities?.map((data, i) => {
+        return (
+          <DonateCard key={i} charities={data} donateHandler={donateHandler} />
+        );
+      })}
+    </DonateCardDiv>
   );
 }
 
