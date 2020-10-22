@@ -102,12 +102,15 @@ const DonateCardDiv = styled.div`
   height: 100%;
 `;
 
+const totalCurrency = Currency.THB;
+
 export function DonatePage() {
   const payments = useRecoilValue(paymentsState);
   const addTotal = useSetRecoilState(donateTotalState);
 
   useEffect(() => {
     const total = payments
+      .filter((o) => o.currency === totalCurrency && o.amount)
       .map((o) => o.amount)
       .reduce((prev, current) => prev + current);
     addTotal(total);
@@ -117,7 +120,7 @@ export function DonatePage() {
     <DonatePageDiv>
       <header>
         <h1>Tamboon React</h1>
-        <DonateTotal currency={Currency.THB} />
+        <DonateTotal currency={totalCurrency} />
         <DonateMessageHeader />
       </header>
       <DonateContent />
