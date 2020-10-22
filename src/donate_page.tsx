@@ -107,12 +107,9 @@ export function DonatePage() {
   const addTotal = useSetRecoilState(donateTotalState);
 
   useEffect(() => {
-    let total = 0;
-    payments.forEach((element) => {
-      if (element.amount) {
-        total += element.amount;
-      }
-    });
+    const total = payments
+      .map((o) => o.amount)
+      .reduce((prev, current) => prev + current);
     addTotal(total);
   }, []);
 
