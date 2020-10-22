@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   atom,
   selector,
@@ -17,6 +17,7 @@ import {
 } from "./requests/payment_requests";
 import { debounce } from "lodash";
 import { Currency } from "./model/enum";
+import Loading from "./gadgets/loading";
 
 //recoil
 const donateTotalAtom = atom<number>({
@@ -131,6 +132,7 @@ function DonateContent() {
   const charities = useRecoilValue(charitiesState);
   const setDonateMessage = useSetRecoilState(donateMessageAtom);
   const addTotal = useSetRecoilState(donateTotalState);
+  const [isRequesting, setIsRequesting] = useState(false);
 
   const donateHandler = async (payment: Payment) => {
     const confirmMessage = `Are you sure you want to donate ${payment.amount.toLocaleString()} ${
@@ -141,6 +143,7 @@ function DonateContent() {
     }
 
     try {
+      setIsRequesting(true);
       const res = await new PostPaymentRequest(payment).start();
       const amount = res.amount;
       setDonateMessage(
@@ -149,6 +152,7 @@ function DonateContent() {
         }!`
       );
       addTotal(amount);
+      setIsRequesting(false);
     } catch (e) {
       throw e;
     }
@@ -161,6 +165,7 @@ function DonateContent() {
           <DonateCard key={i} charities={data} donateHandler={donateHandler} />
         );
       })}
+      {isRequesting ? <Loading /> : ""}
     </DonateCardDiv>
   );
 }

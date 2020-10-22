@@ -4,6 +4,7 @@ import { DonatePage } from "./donate_page";
 import { ThemeProvider } from "styled-components";
 import GlobalStyle, { mainTheme } from "./globalStyles";
 import ErrorBoundary from "./error_boundary";
+import Loading from "./gadgets/loading";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <GlobalStyle />
       <ThemeProvider theme={mainTheme}>
         <ErrorBoundary>
-          <Suspense fallback={<h1>Loading...</h1>}>
+          <Suspense fallback={<Loading />}>
             <DonatePage />
           </Suspense>
         </ErrorBoundary>

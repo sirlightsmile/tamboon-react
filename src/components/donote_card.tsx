@@ -119,6 +119,8 @@ function DonateCard(props: Props) {
       currency: Currency.THB,
     };
     donateHandler(payment);
+    setIsSelected(false);
+    setSelectedAmount(0);
   };
 
   const onClickDonate = () => {
