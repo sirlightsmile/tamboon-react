@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Charities } from "../model/charities_model";
 import { Currency } from "../model/enum";
@@ -13,8 +13,37 @@ const IMAGE_HEIGHT_RATIO = 0.82;
 
 //style
 const InputDiv = styled.div`
-  display: none;
   position: absolute;
+  top: 30px;
+  display: ${(props) => (props.isSelected ? "flex" : "none")};
+  flex-direction: column;
+  align-items: center;
+  width: inherit;
+  height: inherit;
+  font-size: 1.2em;
+  z-index: 1;
+`;
+
+const CardImgDiv = styled.div`
+  background-image: url(${(props) => props.image});
+  background-size: cover;
+  width: inherit;
+  height: inherit;
+  opacity: ${(props) => (props.isSelected ? 0.1 : 1)};
+  transition: 0.3s;
+`;
+
+const Content = styled.div`
+  position: relative;
+  width: ${(props) => props.width + "px"};
+  height: ${(props) => props.height + "px"};
+
+  &:hover ${InputDiv} {
+    display: flex;
+  }
+  :hover ${CardImgDiv} {
+    opacity: 0.1;
+  }
 `;
 
 const CardDiv = styled.div`
@@ -30,35 +59,35 @@ const CardDiv = styled.div`
   width: ${(props) => props.width + "px"};
   height: ${(props) => props.height + "px"};
 
-  :hover ${InputDiv} {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: inherit;
-    height: inherit;
-    margin-top: 30px;
-    font-size: 1.2em;
-  }
-  :hover .card-img {
-    opacity: 10%;
-  }
-
   p {
     font-size: 1.2em;
     font-weight: bold;
   }
 `;
 
-const DonateButton = styled.button`
+const CardTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const Button = styled.button`
   font-size: 1em;
-  margin: 1em;
   border-radius: 3px;
   color: white;
   border: ${(props) => `2px solid ${props.theme.buttonColor}`};
-  background-color: ${(props) => props.theme.buttonColor};
+  border-radius: 8px;
+  background-color: ${(props) =>
+    props.isSelected ? props.theme.activeButtonColor : props.theme.buttonColor};
   width: 100px;
   height: 40px;
+  z-index: 10;
+`;
+
+const PayButton = styled(Button)`
+  margin: 1em;
+  background-color: ${(props) => props.theme.buttonColor};
 `;
 
 const RatioDiv = styled.div`
@@ -75,54 +104,72 @@ export interface Props {
 function DonateCard(props: Props) {
   const { charities, donateHandler } = props;
   const { name, image } = charities;
-  let selectedAmount = 0;
+  const [selectedAmount, setSelectedAmount] = useState(0);
+  const [isSelected, setIsSelected] = useState(false);
 
   const onAmountClickHandler = (amount: number) => {
-    selectedAmount = amount;
+    setSelectedAmount(amount);
   };
 
   const onPayHandler = () => {
-    if (selectedAmount > 0) {
-      const payment: Payment = {
-        id: undefined,
-        charitiesId: charities.id,
-        amount: selectedAmount,
-        currency: Currency.THB,
-      };
-      donateHandler(payment);
+    const payment: Payment = {
+      id: undefined,
+      charitiesId: charities.id,
+      amount: selectedAmount,
+      currency: Currency.THB,
+    };
+    donateHandler(payment);
+  };
+
+  const onClickDonate = () => {
+    const toggle = !isSelected;
+    setIsSelected(toggle);
+    if (!toggle) {
+      setSelectedAmount(0);
     }
   };
 
   return (
     <CardDiv width={CARD_WIDTH} height={CARD_HEIGHT}>
-      <img
-        className="card-img"
-        src={IMAGE_URL_BASE + image}
-        alt={name}
+      <Content
+        image={IMAGE_URL_BASE + image}
         width={CARD_WIDTH}
         height={CARD_HEIGHT * IMAGE_HEIGHT_RATIO}
-      />
-      <p>{name}</p>
-      <InputDiv>
-        <h3>Select amount to donate ({charities.currency})</h3>
-        <RatioDiv>
-          {payments.map((amount, i) => {
-            return (
-              <label key={i}>
-                <input
-                  type="radio"
-                  name="payment"
-                  onClick={() => {
-                    onAmountClickHandler(amount);
-                  }}
-                />
-                {amount}
-              </label>
-            );
-          })}
-        </RatioDiv>
-        <DonateButton onClick={onPayHandler}>Pay</DonateButton>
-      </InputDiv>
+        isSelected={isSelected}
+      >
+        <CardImgDiv image={IMAGE_URL_BASE + image} isSelected={isSelected} />
+        <InputDiv isSelected={isSelected}>
+          <h3>Select amount to donate ({charities.currency})</h3>
+          <RatioDiv>
+            {payments.map((amount, i) => {
+              return (
+                <label key={i}>
+                  <input
+                    type="radio"
+                    name="payment"
+                    onChange={() => {
+                      onAmountClickHandler(amount);
+                    }}
+                    checked={selectedAmount === amount}
+                  />
+                  {amount}
+                </label>
+              );
+            })}
+          </RatioDiv>
+          {selectedAmount > 0 ? (
+            <PayButton onClick={onPayHandler}>Pay</PayButton>
+          ) : (
+            <p color="red">Please select amount</p>
+          )}
+        </InputDiv>
+      </Content>
+      <CardTitle>
+        <p>{name}</p>
+        <Button onClick={onClickDonate} isSelected={isSelected}>
+          Donate
+        </Button>
+      </CardTitle>
     </CardDiv>
   );
 }
