@@ -7,23 +7,24 @@ import { Payment } from '../model/payment_model';
 const payments = [10, 20, 50, 100, 500];
 
 const IMAGE_URL_BASE = 'images/';
-const CARD_WIDTH = 450;
-const CARD_HEIGHT = 280;
-const IMAGE_HEIGHT_RATIO = 0.82;
 
 //style
 const CardDiv = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
-  align-items: center;
-  background-color: white;
-  padding: 10px;
-  box-shadow: 3px 3px 5px 3px #ccc;
+  flex: 1 0 33%;
 
-  margin: 10px;
+  background-color: white;
   border: 1px solid #ccc;
-  width: ${(props) => props.width + 'px'};
-  height: ${(props) => props.height + 'px'};
+  box-shadow: 3px 3px 5px 3px #ccc;
+  padding: 10px;
+  margin: 20px 50px;
+
+  height: 35vh;
+  min-width: 400px;
+  max-width: 550px;
+  max-height: 350px;
 
   p {
     font-size: 1.2em;
@@ -31,31 +32,37 @@ const CardDiv = styled.div`
   }
 `;
 
-const InputDiv = styled.div`
-  position: absolute;
-  top: 30px;
-  display: ${(props) => (props.isSelected ? 'flex' : 'none')};
-  flex-direction: column;
-  align-items: center;
-  width: inherit;
-  height: inherit;
-  font-size: 1.2em;
-  z-index: 1;
-`;
-
 const ImgDiv = styled.div`
+  position: absolute;
   background-image: url(${(props) => props.image});
-  background-size: cover;
-  width: inherit;
-  height: inherit;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  width: 100%;
+  height: 100%;
+
   opacity: ${(props) => (props.isSelected ? 0.1 : 1)};
   transition: 0.3s;
 `;
 
+const InputDiv = styled.div`
+  display: ${(props) => (props.isSelected ? 'flex' : 'none')};
+  position: absolute;
+  flex-direction: column;
+  align-items: center;
+  top: 30px;
+
+  width: inherit;
+  height: inherit;
+
+  font-size: 1.2em;
+  z-index: 1;
+`;
+
 const Content = styled.div`
   position: relative;
-  width: ${(props) => props.width + 'px'};
-  height: ${(props) => props.height + 'px'};
+  width: 100%;
+  height: 100%;
 
   &:hover ${InputDiv} {
     display: flex;
@@ -73,20 +80,21 @@ const TitleDiv = styled.div`
 `;
 
 const Button = styled.button`
-  font-size: 1em;
-  border-radius: 3px;
-  color: white;
   border: ${(props) => `2px solid ${props.theme.buttonColor}`};
   border-radius: 8px;
   background-color: ${(props) => (props.isSelected ? props.theme.activeButtonColor : props.theme.buttonColor)};
+  color: white;
+
+  font-size: 1em;
+  font-weight: bold;
   width: 100px;
   height: 40px;
   z-index: 1;
 `;
 
 const PayButton = styled(Button)`
-  margin: 1em;
   background-color: ${(props) => props.theme.buttonColor};
+  margin: 1em;
 `;
 
 const RatioDiv = styled.div`
@@ -131,13 +139,8 @@ function DonateCard(props: Props) {
   };
 
   return (
-    <CardDiv width={CARD_WIDTH} height={CARD_HEIGHT}>
-      <Content
-        image={IMAGE_URL_BASE + image}
-        width={CARD_WIDTH}
-        height={CARD_HEIGHT * IMAGE_HEIGHT_RATIO}
-        isSelected={isSelected}
-      >
+    <CardDiv>
+      <Content isSelected={isSelected}>
         <ImgDiv image={IMAGE_URL_BASE + image} isSelected={isSelected} />
         <InputDiv isSelected={isSelected}>
           <h3>Select amount to donate ({charities.currency})</h3>
