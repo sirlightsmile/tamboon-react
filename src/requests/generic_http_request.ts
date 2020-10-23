@@ -1,8 +1,7 @@
-import { AxiosError } from "axios";
-import { BaseAPIConfig, BaseHttpRequest } from "./base_http_request";
+import { AxiosError } from 'axios';
+import { BaseAPIConfig, BaseHttpRequest } from './base_http_request';
 
-//TODO: move to config
-const GENERIC_BASE_URL = "http://localhost:3001/";
+const GENERIC_BASE_URL = 'http://localhost:3001/';
 
 export type ConvertFunction<T> = (jsonObj: any) => jsonObj is T;
 
@@ -20,7 +19,7 @@ export class GenericHTTPRequest<T> extends BaseHttpRequest<T> {
     if (this.convertFunc(jsonObj)) {
       return jsonObj as T;
     } else {
-      throw "DATA_CONVERT_FAILED";
+      throw 'DATA_CONVERT_FAILED';
     }
   }
 
