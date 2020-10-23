@@ -1,13 +1,14 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
+import { TransparentBG } from '../styles/customStyles';
 
 const spinning = keyframes`
-from {
-  transform: rotate(0deg);
-}
-to {
-  transform: rotate(360deg);
-}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 `;
 
 const LoadingDiv = styled.div`
@@ -17,14 +18,6 @@ const LoadingDiv = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 100;
-`;
-
-const BG = styled.div`
-  position: absolute;
-  width: inherit;
-  height: inherit;
-  background-color: #ccc;
-  opacity: 0.5;
 `;
 
 const Content = styled.div`
@@ -44,14 +37,9 @@ const LoadingImg = styled.img`
 function Loading() {
   return (
     <LoadingDiv onClick={() => {}}>
-      <BG />
+      <TransparentBG />
       <Content>
-        <LoadingImg
-          src="/images/loading.png"
-          width={80}
-          height={80}
-          alt="loading"
-        ></LoadingImg>
+        <LoadingImg src="/images/loading.png" width={80} height={80} alt="loading"></LoadingImg>
         <h1>Loading...</h1>
       </Content>
     </LoadingDiv>
