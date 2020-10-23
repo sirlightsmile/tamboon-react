@@ -42,12 +42,14 @@ const ContentDiv = styled.div`
 
 function DonateContent() {
   const charities = useRecoilValue(charitiesState);
-  const setDonateMessage = useSetRecoilState(popupMessageAtom);
+  const setPopupMessage = useSetRecoilState(popupMessageAtom);
   const addTotal = useSetRecoilState(donateTotalState);
   const [isRequesting, setIsRequesting] = useState(false);
 
   const donateHandler = async (payment: Payment) => {
-    const confirmMessage = `Are you sure you want to donate ${payment.amount.toLocaleString()} ${payment.currency}`;
+    const charitiesName = charities.find((o) => o.id === payment.charitiesId)?.name;
+    const amountStr = `${payment.amount.toLocaleString()} ${payment.currency}`;
+    const confirmMessage = `Are you sure you want to donate ${amountStr} to ${charitiesName}`;
     if (!confirm(confirmMessage)) {
       return;
     }
@@ -56,7 +58,7 @@ function DonateContent() {
       setIsRequesting(true);
       const res = await new PostPaymentRequest(payment).start();
       const amount = res.amount;
-      setDonateMessage(`Thank you for your donation ${amount.toLocaleString()} ${payment.currency}!`);
+      setPopupMessage(`Thank you for your donation ${amountStr}! to\n${charitiesName}`);
       addTotal(amount);
       setIsRequesting(false);
     } catch (e) {

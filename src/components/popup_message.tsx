@@ -15,8 +15,8 @@ const displayAnim = keyframes`
     width: 0%;
   }
   to {
-    height: 150px;
-    width: 100%;
+    height: 300px;
+    width: 90%;
   }
 `;
 
@@ -26,25 +26,31 @@ const PopupStyle = styled.div`
   align-items: center;
   justify-content: center;
   top: 20vh;
-  width: 100%;
-  height: 150px;
+  width: 90%;
+  height: 300px;
   z-index: 10;
 `;
 
 const BG = styled(TransparentBG)`
   animation: ${displayAnim} 0.2s linear;
   background-color: black;
+  border-radius: 12px;
   opacity: 0.7;
+`;
+
+const MessageDiv = styled.div`
+  margin: 2em;
+  width: inherit;
+  height: fit-content;
+  z-index: 11;
 `;
 
 const MessageStyle = styled.p`
   color: ${(props) => props.theme.popupFontColor};
-  margin: 2em;
   font-size: 3em;
   font-weight: bold;
   text-align: center;
   text-shadow: 2px 2px darkgray;
-  z-index: 11;
 `;
 
 function PopupMessage() {
@@ -64,7 +70,11 @@ function PopupMessage() {
   return message ? (
     <PopupStyle>
       <BG />
-      <MessageStyle>{message}</MessageStyle>
+      <MessageDiv>
+        {message.split('\n').map((o) => (
+          <MessageStyle>{o}</MessageStyle>
+        ))}
+      </MessageDiv>
     </PopupStyle>
   ) : null;
 }
