@@ -51,7 +51,7 @@ const InputDiv = styled.div`
   position: absolute;
   flex-direction: column;
   align-items: center;
-  top: 30px;
+  top: 5vh;
 
   width: inherit;
   height: inherit;
@@ -127,7 +127,6 @@ function DonateCard(props: Props) {
       currency: Currency.THB,
     };
     donateHandler(payment);
-    setIsSelected(false);
     setSelectedAmount(0);
   };
 
