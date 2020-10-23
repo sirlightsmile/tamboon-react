@@ -12,40 +12,6 @@ const CARD_HEIGHT = 280;
 const IMAGE_HEIGHT_RATIO = 0.82;
 
 //style
-const InputDiv = styled.div`
-  position: absolute;
-  top: 30px;
-  display: ${(props) => (props.isSelected ? 'flex' : 'none')};
-  flex-direction: column;
-  align-items: center;
-  width: inherit;
-  height: inherit;
-  font-size: 1.2em;
-  z-index: 1;
-`;
-
-const CardImgDiv = styled.div`
-  background-image: url(${(props) => props.image});
-  background-size: cover;
-  width: inherit;
-  height: inherit;
-  opacity: ${(props) => (props.isSelected ? 0.1 : 1)};
-  transition: 0.3s;
-`;
-
-const Content = styled.div`
-  position: relative;
-  width: ${(props) => props.width + 'px'};
-  height: ${(props) => props.height + 'px'};
-
-  &:hover ${InputDiv} {
-    display: flex;
-  }
-  :hover ${CardImgDiv} {
-    opacity: 0.1;
-  }
-`;
-
 const CardDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -65,7 +31,41 @@ const CardDiv = styled.div`
   }
 `;
 
-const CardTitle = styled.div`
+const InputDiv = styled.div`
+  position: absolute;
+  top: 30px;
+  display: ${(props) => (props.isSelected ? 'flex' : 'none')};
+  flex-direction: column;
+  align-items: center;
+  width: inherit;
+  height: inherit;
+  font-size: 1.2em;
+  z-index: 1;
+`;
+
+const ImgDiv = styled.div`
+  background-image: url(${(props) => props.image});
+  background-size: cover;
+  width: inherit;
+  height: inherit;
+  opacity: ${(props) => (props.isSelected ? 0.1 : 1)};
+  transition: 0.3s;
+`;
+
+const Content = styled.div`
+  position: relative;
+  width: ${(props) => props.width + 'px'};
+  height: ${(props) => props.height + 'px'};
+
+  &:hover ${InputDiv} {
+    display: flex;
+  }
+  :hover ${ImgDiv} {
+    opacity: 0.1;
+  }
+`;
+
+const TitleDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -138,7 +138,7 @@ function DonateCard(props: Props) {
         height={CARD_HEIGHT * IMAGE_HEIGHT_RATIO}
         isSelected={isSelected}
       >
-        <CardImgDiv image={IMAGE_URL_BASE + image} isSelected={isSelected} />
+        <ImgDiv image={IMAGE_URL_BASE + image} isSelected={isSelected} />
         <InputDiv isSelected={isSelected}>
           <h3>Select amount to donate ({charities.currency})</h3>
           <RatioDiv>
@@ -165,12 +165,12 @@ function DonateCard(props: Props) {
           )}
         </InputDiv>
       </Content>
-      <CardTitle>
+      <TitleDiv>
         <p>{name}</p>
         <Button onClick={onClickDonate} isSelected={isSelected}>
           Donate
         </Button>
-      </CardTitle>
+      </TitleDiv>
     </CardDiv>
   );
 }
