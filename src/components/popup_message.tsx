@@ -47,7 +47,7 @@ const MessageDiv = styled.div`
 
 const MessageStyle = styled.p`
   color: ${(props) => props.theme.popupFontColor};
-  font-size: 3em;
+  font-size: 3rem;
   font-weight: bold;
   text-align: center;
   text-shadow: 2px 2px darkgray;
@@ -71,9 +71,14 @@ function PopupMessage() {
     <PopupStyle>
       <BG />
       <MessageDiv>
-        {message.split('\n').map((o) => (
-          <MessageStyle>{o}</MessageStyle>
-        ))}
+        <MessageStyle>
+          {message.split('\n').map((o, i) => (
+            <React.Fragment key={i}>
+              {o}
+              {i < message.length - 1 ? <br /> : ''}
+            </React.Fragment>
+          ))}
+        </MessageStyle>
       </MessageDiv>
     </PopupStyle>
   ) : null;

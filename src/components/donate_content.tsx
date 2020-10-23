@@ -58,7 +58,7 @@ function DonateContent() {
       setIsRequesting(true);
       const res = await new PostPaymentRequest(payment).start();
       const amount = res.amount;
-      setPopupMessage(`Thank you for your donation ${amountStr}! to\n${charitiesName}`);
+      setPopupMessage(`Thank you for your donation ${amountStr}!\nto\n${charitiesName}`);
       addTotal(amount);
       setIsRequesting(false);
     } catch (e) {
