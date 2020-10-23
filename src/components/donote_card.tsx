@@ -25,7 +25,7 @@ const CardDiv = styled.div`
   min-width: 400px;
   max-width: 550px;
   min-height: 300px;
-  max-height: 350px;
+  max-height: 400px;
 
   p {
     font-size: 1.2em;
