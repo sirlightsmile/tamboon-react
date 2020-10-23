@@ -8,6 +8,7 @@
     "allowJs": true,
     "moduleResolution": "Node",
     "resolveJsonModule": true,
+    "esModuleInterop": true,
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./node_modules/@types"]
