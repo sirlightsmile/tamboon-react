@@ -11,7 +11,11 @@ describe('helpers', () => {
     expect(payments.length > 0).toBeTruthy();
   });
 
-  test('should get correct summary', function () {
+  test('should get correct summary THB', function () {
     expect(summaryDonationsByCurrency(payments, Currency.THB)).toEqual(60);
+  });
+
+  test('should get correct summary USD', function () {
+    expect(summaryDonationsByCurrency(payments, Currency.USD)).toEqual(30);
   });
 });

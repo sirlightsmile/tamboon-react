@@ -1,3 +1,4 @@
 export enum Currency {
-    THB ="THB"
+  THB = 'THB',
+  USD = 'USD',
 }
