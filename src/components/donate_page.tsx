@@ -5,6 +5,7 @@ import { Currency } from '../model/enum';
 import PopupMessage from './popup_message';
 import DonateTotal, { donateTotalState } from './donate_total';
 import DonateContent, { paymentsState } from './donate_content';
+import { summaryDonationsByCurrency } from '../helper';
 
 //style
 const PageDiv = styled.div`
@@ -35,10 +36,7 @@ export function DonatePage() {
   const addTotal = useSetRecoilState(donateTotalState);
 
   useEffect(() => {
-    const total = payments
-      .filter((o) => o.currency === defaultCurrency && o.amount)
-      .map((o) => o.amount)
-      .reduce((prev, current) => prev + current);
+    const total = summaryDonationsByCurrency(payments, defaultCurrency);
     addTotal(total);
   }, []);
 
