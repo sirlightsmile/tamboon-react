@@ -1,5 +1,5 @@
-import { createGlobalStyle } from "styled-components";
-import FontURL from "./fonts/Quicksand-SemiBold.ttf";
+import { createGlobalStyle } from 'styled-components';
+import FontURL from '../fonts/Quicksand-SemiBold.ttf';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -18,11 +18,11 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export const mainTheme = {
-  primaryColor: "#B3E5FC",
-  secondaryColor: "#0277BD",
-  buttonColor: "#055894",
-  activeButtonColor: "#051094",
-  popupFontColor: "#fB9B50",
+  primaryColor: '#B3E5FC',
+  secondaryColor: '#0277BD',
+  buttonColor: '#055894',
+  activeButtonColor: '#051094',
+  popupFontColor: '#fB9B50',
 };
 
 export default GlobalStyle;
