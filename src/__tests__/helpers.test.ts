@@ -1,7 +1,7 @@
 import { summaryDonationsByCurrency } from '../helper';
 import { Currency } from '../model/enum';
 import { Payment } from '../model/payment_model';
-import * as mockDB from './mockDB.json';
+import * as mockDB from './mock/mockDB.json';
 
 describe('helpers', () => {
   const data = JSON.stringify(mockDB?.payments);
