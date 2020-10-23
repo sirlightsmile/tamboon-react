@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Charities } from "../model/charities_model";
-import { Currency } from "../model/enum";
-import { Payment } from "../model/payment_model";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Charities } from '../model/charities_model';
+import { Currency } from '../model/enum';
+import { Payment } from '../model/payment_model';
 
 const payments = [10, 20, 50, 100, 500];
 
-const IMAGE_URL_BASE = "images/";
+const IMAGE_URL_BASE = 'images/';
 const CARD_WIDTH = 450;
 const CARD_HEIGHT = 280;
 const IMAGE_HEIGHT_RATIO = 0.82;
@@ -15,7 +15,7 @@ const IMAGE_HEIGHT_RATIO = 0.82;
 const InputDiv = styled.div`
   position: absolute;
   top: 30px;
-  display: ${(props) => (props.isSelected ? "flex" : "none")};
+  display: ${(props) => (props.isSelected ? 'flex' : 'none')};
   flex-direction: column;
   align-items: center;
   width: inherit;
@@ -35,8 +35,8 @@ const CardImgDiv = styled.div`
 
 const Content = styled.div`
   position: relative;
-  width: ${(props) => props.width + "px"};
-  height: ${(props) => props.height + "px"};
+  width: ${(props) => props.width + 'px'};
+  height: ${(props) => props.height + 'px'};
 
   &:hover ${InputDiv} {
     display: flex;
@@ -56,8 +56,8 @@ const CardDiv = styled.div`
 
   margin: 10px;
   border: 1px solid #ccc;
-  width: ${(props) => props.width + "px"};
-  height: ${(props) => props.height + "px"};
+  width: ${(props) => props.width + 'px'};
+  height: ${(props) => props.height + 'px'};
 
   p {
     font-size: 1.2em;
@@ -78,11 +78,10 @@ const Button = styled.button`
   color: white;
   border: ${(props) => `2px solid ${props.theme.buttonColor}`};
   border-radius: 8px;
-  background-color: ${(props) =>
-    props.isSelected ? props.theme.activeButtonColor : props.theme.buttonColor};
+  background-color: ${(props) => (props.isSelected ? props.theme.activeButtonColor : props.theme.buttonColor)};
   width: 100px;
   height: 40px;
-  z-index: 10;
+  z-index: 1;
 `;
 
 const PayButton = styled(Button)`
